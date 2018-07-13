@@ -1,118 +1,91 @@
-<div class="center" >
-  <p > !! Page Repas under construction !! </p>
+<div class="center">
+  <p> !! Page Repas under construction !! </p>
 </div>
 
 <div id="typeRepas">
-<div><h4>Votre type de repas</h4></div>
+  <div>
+    <h4>Votre type de repas</h4>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-select placeholder="Saisir le type de repas">
+        <mat-option *ngFor="let typem of typeMeal" [value]="typem.value">
+          {{ typem.viewValue }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+
+
+
 <div>
-<mat-form-field>
-  <mat-select placeholder="Saisir le type de repas">
-    <mat-option *ngFor="let typem of typeMeal" [value]="typem.value">
-      {{ typem.viewValue }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
-</div>
-</div>
-
-
-
-
-<form action="" id="cg_form" oninput="cg.value= (ig.value * (glucides.value* portion.value)/100)/100; return false">
-
-
-  <table id="tableau">
+  <table>
     <thead>
       <tr>
         <th class="large">Aliments</th>
         <th class="small">IG</th>
-        <th class="small">Portion <br> (en gr)</th>
+        <th class="small">Portion
+          <br> (en gr)</th>
         <th class="small">Glucides</th>
         <th class="small">CG</th>
-        <th class="small">Energie</th>
-        <th class="small">Protéines </th>
-        <th class="small">Lipides</th>
-        <th class="large">Commentaires</th>
+        <th class="small">Supprimer</th>
       </tr>
     </thead>
-
     <tbody>
-      <tr  id="rowToClone">
-        <td class="large">
+      <tr *ngFor="let foodRow of foodsRow ; let i = index">
+        <td>
+          <!-- {{foodRow | json}} [(ngModel)]="foodRow.nameFood" -->
+
           <form [formGroup]="foodForm">
             <mat-form-field>
-              <input matInput type="text" matInput placeholder="Aliment..." formControlName="foodsGroup" required [matAutocomplete]="autoGroup"/>
-                <mat-autocomplete #autoGroup="matAutocomplete">
-                  <mat-optgroup *ngFor="let group of foodsGroupOptions | async" [label]="group.categorie">
-                    <mat-option *ngFor="let food of group.foods" [value]="food">
-                      {{ food }}
-                    </mat-option>
+              <input matInput type="text" 
+                    matInput placeholder="Aliment..." 
+                    formControlName="foodsGroup" 
+                    required [matAutocomplete]="autoGroup"
+                   [(ngModel)]="foodRow.nameFood"  />
+              <mat-autocomplete #autoGroup="matAutocomplete" [displayWith]="displayFn" (optionSelected)="getFood(i)" >
+                <mat-optgroup *ngFor="let group of foodsGroupOptions | async" [label]="group.categorie">
+                  <mat-option  *ngFor="let food of group.foods" [value]="food">
+                    {{ food.name  }}
+                  </mat-option>
                 </mat-optgroup>
               </mat-autocomplete>
-            </mat-form-field> 
-          </form>  
+            </mat-form-field>
+          </form>
+
           <!-- <input type="text" name="AlimentName" value=""> -->
         </td>
-        <td class="small">
+        <td>
           <label for="ig"></label>
-          <input type="number" name="ig" id="ig" step="0.01" min="0">
+          <input [(ngModel)]="foodRow.ig" type="number" name="ig" id="ig" step="0.01" min="0">
         </td>
         <td class="small">
           <label for="portion"></label>
-          <input type="number" name="portion" id="portion" step="0.01" min="0">
+          <input [(ngModel)]="foodRow.portion" (change)="calculCG(i)" type="number" name="portion" id="portion" step="0.01" min="0">
         </td>
         <td class="small">
           <label for="glucides"></label>
-          <input type="number" name="glucides" id="glucides" step="0.01" min="0">
+          <input [(ngModel)]="foodRow.glucides" type="number" name="glucides" id="glucides" step="0.01" min="0">
         </td>
         <td class="coin">
           <label></label>
           <!-- <input type="submit">  -->
-          <output  for="ig portion glucides" name="cg"> </output>
-        </td>
-        <td class="small">
-          <input type="text" name="Energie" value="">
-        </td>
-        <td class="small">
-          <input type="text" name="Proteines" value="">
-        </td>
-        <td class="small">
-          <input type="text" name="Lipides" value="">
-        </td>
-        <td class="comment" class="large">
-          <input type="text" name="Commentaires" value="">
+          <input disabled [(ngModel)]="foodRow.cg" type="number" name="glucides" id="glucides" step="0.01" min="0">
+          <!-- <output  for="ig portion glucides" name="cg"> </output> -->
         </td>
         <td>
-          <td class="col-sm-2"><a class="deleteRow"></a>
+          <button class="btn btn-default" type="button" (click)="deleteFoodRow(i)">Delete</button>
         </td>
       </tr>
     </tbody>
-    <!-- <tfoot>
+    <tfoot>
       <tr>
-          <td colspan="5" style="text-align: left;">
-              <input type="button" class="btn btn-lg btn-block " id="addrow" value="Add Row" />
-          </td>
+        <td colspan="5" style="text-align: left;">
+          <button class="btn btn-default" type="button" (click)="addFoodRow()">Add</button>
+        </td>
+        <td>{{ getSum() }} </td>
       </tr>
-     
-  </tfoot> -->
-
+    </tfoot>
   </table>
-</form>
-<input class="btn btn-sm btn-success" type="button" value="Add Rows" (click)="addRow()"/>
-<button class="btn btn-sm btn-success" mat-button (click)="addRow();">Add a food</button>
-
-<h1>
-    Creating Dynamic Textboxes (rows)
-  </h1>
-  <input type="button" value="Add Rows" (click)="addRow()"/>
-  <div *ngFor="let item of row; let i=index">
-    <input type="text" name="name{{i}}" [(ngModel)]="item.name"> 
-    <!-- <input type="button" value="Delete Rows" (click)="deleteRow(index)"/> -->
-      <span> {{item.name}}</span>
-      <span>age : {{item.age}}</span>
-      <!-- <input type="button" value="Delete Rows" (click)="delete(item.id)"> -->
-      </div>
-  
-
-
-
+</div>
