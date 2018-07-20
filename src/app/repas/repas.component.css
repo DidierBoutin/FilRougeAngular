@@ -1,61 +1,77 @@
-.center {
+/* .center {
   text-align: center;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-weight: bold;
   font-style: italic;
-  color: rgb(46, 236, 46);
-}
-
+  color: rgb(46, 236, 46); */
+/* } */
 
 #typeRepas {
   display: flex;
   margin-top: 2px;
-  margin-left: 5px;
-  margin-bottom: 10px;
+  margin-left: 2px;
+  margin-bottom: 2px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: 15px;
+  font-size: 10px;
+  margin-left: 10px;
 }
 
 /* Structure */
 
 table {
-  /* width: 100%; */
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 12px;
+  border-collapse: collapse;
+  width: 80%;
+  font-weight: bold;
+  margin-left: 15px;
 }
 
-th {
-  background-color: #4CAF50;
-  color: white;
+/* .CG {
+  background-color: #FDE9E0;
+} */
+
+
+th,
+td,
+tfoot {
+  padding: 8px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+#alignLeft {
+  text-align: center;
+}
+
+th,
+tfoot {
+  color: cornflowerblue;
+}
+
+tfoot {
+  height: 5px;
 }
 
 mat-form-field {
   font-size: 14px;
-  margin-left: 10px;
 }
 
 form {
   display: inline;
 }
 
-/* .autoCompletion {
-  width: 90%;
-} */
-
-.coin {
-  border: 0.5px solid grey;
-  background: papayawhip;
- 
+.bordure {
+  border: hidden;
+  text-align: center
 }
 
-/* .comment {
- overflow: auto;
-} */
-
-/* .large {
-  width: 50%;
+.form-control,
+.form-group {
+  color: cornflowerblue;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 12px;
+  width: 80%;
+  font-weight: bold;
+  margin-left: 15px;
 }
-
-.small {
-  width:auto;
-} */

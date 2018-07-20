@@ -1,12 +1,13 @@
-<p>
-  connexion works!
-</p>
-
-
-<div class="container-fluid">
-    <div class="row justify-content-md-left" >
-        <div class="content with-margin">
-          <button type="button" class="btn btn-dark">Enregistrer le Repas</button>
-        </div>
-    </div>
- </div>
+<form [formGroup]="stateForm">
+    <mat-form-field>
+      <input type="text" matInput placeholder="States Group" formControlName="sttateGroup" required [matAutocomplete]="autoGroup">
+        <mat-autocomplete #autoGroup="matAutocomplete">
+          <mat-optgroup *ngFor="let elt of stateGroupOptions | async" [label]="elt.letter">
+            <mat-option *ngFor="let name of elt.names" [value]="name">
+              {{name}}
+            </mat-option>
+        </mat-optgroup>
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
+  

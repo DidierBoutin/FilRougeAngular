@@ -1,9 +1,14 @@
+import { getTestBed } from '@angular/core/testing';
+import { AutoComplFoodsGroup, AutoFoodsGroup } from './../foods_group';
+import { FoodsService } from './../foods.service';
 import { MatTableDataSource } from '@angular/material';
 import { Component, OnInit } from '@angular/core';
 import { Ng2SmartTableModule, LocalDataSource } from 'ng2-smart-table';
-import { FoodsGroup, AutoComplFoodsGroup, Foods, AutoComplFoods, ListFoods } from './../foods_group';
-import { FoodsService} from './../foods.service';
-import { Column } from 'ng2-smart-table/lib/data-set/column';
+
+import { Foods, ListFoods, FoodsGroup } from '../foods_group';
+// import { eventNames } from 'cluster';
+
+
 
 
 
@@ -11,137 +16,161 @@ import { Column } from 'ng2-smart-table/lib/data-set/column';
   selector: 'app-aliments',
   templateUrl: './aliments.component.html',
   styleUrls: ['./aliments.component.css'],
+
 })
 
-export class AlimentsComponent implements OnInit  {
 
 
-// Setting est une propriéte de ng2-smart-table qui définit ses colonnes,
-// et active ou non les acions de confirmation
-// ==> "Property binding" avec html
-settings = {
-  Supprimer: {
-    confirmDelete: true,
-  },
-  Ajouter: {
-    confirmCreate: true,
-  },
-  Modifier: {
-    confirmSave: true,
-  },
-  columns: {
-    id: {
-      title: 'Identifiant',
-      editable: false,
-      sort: true,
-      filter: true,
-    },
-    name: {
-      title: 'Aliment',
-      editable: true,
-      sort: true,
-      width: '30%',
-      filter: true,
-      // filter: {
-      //   type: 'list',
-      //   config: {
-      //     selectText: ' ',
-      //     list:  this.foodsService.autoCFG2,
-      //   },
-      // },
-    },
-    categorie: {
-      title: 'Catégorie',
-      editable: true,
-      sort: true,
-      filter: true,
-    },
-    glycIndex: {
-      title: 'Indice Glycémique',
-      editable: true,
-      sort: true,
-      filter: true,
-    },
-    energy: {
-      title: 'Glucides',
-      editable: true,
-      sort: true,
-      filter: true,
-    },
-    carboHydrates : {
-      title: 'Energie',
-      editable: true,
-      sort: true,
-      filter: true,
-
-    },
-    proteins : {
-      title: 'Protéine',
-      editable: true,
-      sort: true,
-      filter: true,
-
-    },
-    lipids : {
-      title: 'Lipide',
-      editable: true,
-      sort: true,
-      filter: true,
-
-    },
-    comment : {
-      title: 'Commentaire',
-      editable: true,
-      sort: true,
-      filter: true,
-    },
-  },
-};
-
-// source est une propriéte de ng2-smart-table : données de la liste
-// ==> "Property binding" avec html
-source: LocalDataSource;
+export class AlimentsComponent implements OnInit {
 
 
+  autoFoodsGroups: AutoFoodsGroup[] = [] ;
 
-constructor(public foodsService: FoodsService) {}
+  settings: any;
 
-ngOnInit() {
+  source: LocalDataSource;
+
+  idc: number;
+
+
+  constructor(public foodsService: FoodsService) {
+  }
+
+  ngOnInit() {
     this.foodsService.getAllFoods()
-    .subscribe((foods) => {
-      this.source = new LocalDataSource(this.formaterSource(foods)); } );
+      .subscribe((foods) => {
+        this.foodsService.formaterAutoCompl(foods);
+        this.source = new LocalDataSource(this.foodsService.listFoods);
+         this.autoFoodsGroups = this.foodsService.listGroup;
+         console.log('ici');
+
+        console.log(this.autoFoodsGroups);
+
+        console.log(this.foodsService.listFoods);
+
+        this.settings = {
+          actions: {
+            position: 'right',
+            columnTitle: '',
+          },
+            delete: {
+              // deleteButtonContent: 'Supprimer',
+              confirmDelete: true,
+              deleteButtonContent: '  <span class="glyphicon glyphicon-remove table-actions-button"></span>  ',
+              mode: 'external'
+            },
+            add: {
+              // addButtonContent: 'Ajouter',
+              confirmCreate: true,
+              addButtonContent: '<span class="glyphicon glyphicon-plus">'
+            },
+            edit: {
+              confirmSave: true,
+              // mode: 'inline',
+              // editButtonContent: '<span class="glyphicon glyphicon-pencil"></span>'
+            },
+          setPaging: true,
+          pager: {
+            display: true,
+          },
+          columns: {
+            // id: {
+            //   title: 'ID',
+            //   width: '5%',
+            //   show: false,
+            //   editable: false,
+            //   creatable: false,
+              // sort: true,
+              // filter: true,
+              // show: false,
+
+            name: {
+              title: 'Aliment',
+              editable: true,
+              sort: true,
+              width: '20%',
+              filter: true,
+              editor: {
+                type: 'textarea',
+              },
+            },
+            categorie: {
+              title: 'Catégorie',
+              width: '15%',
+              // valuePrepareFunction: ((cell) =>  cell.name) ,
+              editor: {
+                type: 'list',
+                 config: {
+                    selectText: 'Select...',
+                    list: this.foodsService.listGroup,
+                    confirmSave: true,
+                },
+            },
+               filter: {
+                type: 'list',
+                config: {
+                  selectText: 'Select...',
+                  list:  this.foodsService.listGroup,
+              }
+            }
+          },
+            glycIndex: {
+              title: 'IG (pour 100gr)   ',
+              editable: true,
+              width: '7%',
+              filter: true,
+              type: 'number',
+            },
+            energy: {
+              title: 'Energie',
+              editable: true,
+              width: '7%',
+              filter: true,
+            },
+            // portion: {
+            //   title: 'Portion (en gr)',
+            //   editable: true,
+            //   filter: false,
+            // },
+            carboHydrates: {
+              title: 'Glucides',
+              editable: true,
+              width: '2%',
+              filter: true,
+            },
+            proteins: {
+              title: 'Proteines',
+              editable: true,
+              width: '7%',
+              filter: true,
+            },
+            lipids: {
+              title: 'Lipides',
+              editable: true,
+              width: '7%',
+
+              filter: true,
+            },
+            comment: {
+              title: 'Commentaires',
+              editable: true,
+              editor: {
+                type: 'textarea',
+              },
+              width: '20%',
+              filter: true,
+            },
+
+          },
+        };
+
+
+
+
+      });
   }
 
 
-
-
-
-  // Permet de formater la donnée source utilisé comme propriété de ng2-smart-table
-  formaterSource(f: Foods[]): ListFoods[] {
-
-    const listFoods: ListFoods[] = [];
-
-    let i: number;
-    for (i = 0 ; i < f.length; i++) {
-      let cat: string;
-      if (  (f[i]['foodsGroup'] !== null)
-              && (f[i]['foodsGroup'] !== undefined)) {
-                  cat = f[i]['foodsGroup']['name'];
-          } else { cat =  f[i]['name']; }
-
-      listFoods.push(
-          { id: f[i]['id'],
-            name: f[i]['name'],
-            categorie: cat,
-            glycIndex: f[i]['glycIndex'],
-            energy: f[i]['energy'],
-            carboHydrates: f[i]['carboHydrates'],
-            proteins: f[i]['proteins'],
-            lipids: f[i]['lipids'],
-            comment: f[i]['comment']});
-    }
-    return listFoods;
-  }
 
 
 // onDeleteConfirm, onSaveConfirm, onCreateConfirm sont des fonctions liés aux évenemets
@@ -151,26 +180,83 @@ ngOnInit() {
   onDeleteConfirm(event) {
     if (window.confirm('Are you sure you want to delete?')) {
       event.confirm.resolve();
+
+      const newFood: Foods = this.formatFoodsGroupDelete(event);
+      this.foodsService.delete(newFood).subscribe ( (food: Foods) => {
+        food = newFood;
+   });
+
     } else {
       event.confirm.reject();
     }
   }
 
   onSaveConfirm(event) {
-    if (window.confirm('Are you sure you want to save?')) {
-      event.newData['name'] += ' + added in code';
-      event.confirm.resolve(event.newData);
-    } else {
+     if (window.confirm('Are you sure you want to save?')) {
+       event.confirm.resolve(event.newData);
+       // this.source.remove(event.newdata);
+       const newFood: Foods = this.formatFoodsGroup(event);
+
+       this.foodsService.update(newFood).subscribe ( (food: Foods) => {
+             food = newFood;
+        });
+     } else {
       event.confirm.reject();
     }
+    this.source.refresh();
   }
   onCreateConfirm(event) {
-    if (window.confirm('Are you sure you want to create?')) {
-      event.newData['name'] += ' + added in code';
+     if (window.confirm('Are you sure you want to create   ?')) {
+
+      const newFood: Foods = this.formatFoodsGroup(event);
+      this.foodsService.create(newFood).subscribe ( (food: Foods) => {
+        food = newFood; });
       event.confirm.resolve(event.newData);
+
+
     } else {
       event.confirm.reject();
     }
+    this.source.refresh();
   }
-}
 
+  formatFoodsGroup(event: any): Foods {
+    const  newFoodsGroup: AutoFoodsGroup = this.foodsService.listGroup
+       .find( (element) => { if (element.value === event.newData.categorie) { return event.newData.categorie; }
+      });
+
+      return  {
+        id: event.newData.id ,
+        name: event.newData.name ,
+        foodsGroup: { id: newFoodsGroup.id, name: newFoodsGroup.value },
+        glycIndex: event.newData.glycIndex ,
+        energy: event.newData.energy,
+        carboHydrates: event.newData.carboHydrates,
+        proteins: event.newData.proteins,
+        lipids: event.newData.lipids,
+        comment: event.newData.comment,
+        createDate: ''};
+
+  }
+  formatFoodsGroupDelete(event: any): Foods {
+    const  newFoodsGroup: AutoFoodsGroup = this.foodsService.listGroup
+       .find( (element) => { if (element.value === event.data.categorie) { return event.data.categorie; }
+      });
+
+      return  {
+        id: event.data.id ,
+        name: event.data.name ,
+        foodsGroup: { id: newFoodsGroup.id, name: newFoodsGroup.value },
+        glycIndex: event.data.glycIndex ,
+        energy: event.data.energy,
+        carboHydrates: event.data.carboHydrates,
+        proteins: event.data.proteins,
+        lipids: event.data.lipids,
+        comment: event.data.comment,
+        createDate: ''};
+
+  }
+
+
+
+}

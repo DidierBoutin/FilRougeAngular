@@ -1,91 +1,60 @@
-<div class="center">
-  <p> !! Page Repas under construction !! </p>
-</div>
-
+<br>
 <div id="typeRepas">
-  <div>
-    <h4>Votre type de repas</h4>
-  </div>
-  <div>
-    <mat-form-field>
-      <mat-select placeholder="Saisir le type de repas">
-        <mat-option *ngFor="let typem of typeMeal" [value]="typem.value">
-          {{ typem.viewValue }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
+
+  <mat-form-field>
+    <mat-select placeholder="Saisir le type de repas">
+      <mat-option *ngFor="let typem of typeMeal" [value]="typem.value">
+        {{ typem.viewValue }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
 </div>
 
-
-
+&nbsp;
 <div>
+
   <table>
     <thead>
       <tr>
-        <th class="large">Aliments</th>
-        <th class="small">IG</th>
-        <th class="small">Portion
+        <th>
+          <button mat-icon-button>
+            <mat-icon style="font-size:25px; color: #82C46C" aria-label="Add" (click)="addFoodRow()">playlist_add</mat-icon>
+          </button>
+        </th>
+        <th id="alignLeft">Aliments</th>
+        <th>IG</th>
+        <th>Portion
           <br> (en gr)</th>
-        <th class="small">Glucides</th>
-        <th class="small">CG</th>
-        <th class="small">Supprimer</th>
+        <th>Glucides</th>
+        <th>CG</th>
+        <th></th>
       </tr>
     </thead>
+
     <tbody>
-      <tr *ngFor="let foodRow of foodsRow ; let i = index">
-        <td>
-          <!-- {{foodRow | json}} [(ngModel)]="foodRow.nameFood" -->
-
-          <form [formGroup]="foodForm">
-            <mat-form-field>
-              <input matInput type="text" 
-                    matInput placeholder="Aliment..." 
-                    formControlName="foodsGroup" 
-                    required [matAutocomplete]="autoGroup"
-                   [(ngModel)]="foodRow.nameFood"  />
-              <mat-autocomplete #autoGroup="matAutocomplete" [displayWith]="displayFn" (optionSelected)="getFood(i)" >
-                <mat-optgroup *ngFor="let group of foodsGroupOptions | async" [label]="group.categorie">
-                  <mat-option  *ngFor="let food of group.foods" [value]="food">
-                    {{ food.name  }}
-                  </mat-option>
-                </mat-optgroup>
-              </mat-autocomplete>
-            </mat-form-field>
-          </form>
-
-          <!-- <input type="text" name="AlimentName" value=""> -->
-        </td>
-        <td>
-          <label for="ig"></label>
-          <input [(ngModel)]="foodRow.ig" type="number" name="ig" id="ig" step="0.01" min="0">
-        </td>
-        <td class="small">
-          <label for="portion"></label>
-          <input [(ngModel)]="foodRow.portion" (change)="calculCG(i)" type="number" name="portion" id="portion" step="0.01" min="0">
-        </td>
-        <td class="small">
-          <label for="glucides"></label>
-          <input [(ngModel)]="foodRow.glucides" type="number" name="glucides" id="glucides" step="0.01" min="0">
-        </td>
-        <td class="coin">
-          <label></label>
-          <!-- <input type="submit">  -->
-          <input disabled [(ngModel)]="foodRow.cg" type="number" name="glucides" id="glucides" step="0.01" min="0">
-          <!-- <output  for="ig portion glucides" name="cg"> </output> -->
-        </td>
-        <td>
-          <button class="btn btn-default" type="button" (click)="deleteFoodRow(i)">Delete</button>
-        </td>
-      </tr>
+      <app-line-food 
+                      *ngFor="let foodRow of foodsRow ; 
+                      let i = index" [index]="i" [foodRow]="foodRow" (deleted)="deleteFoodRow($event)" >
+     </app-line-food>
+     
     </tbody>
     <tfoot>
-      <tr>
-        <td colspan="5" style="text-align: left;">
-          <button class="btn btn-default" type="button" (click)="addFoodRow()">Add</button>
-        </td>
-        <td>{{ getSum() }} </td>
-      </tr>
+      <td>
+        &nbsp;
+      </td>
+      <td> &nbsp; </td>
+      <td> &nbsp; </td>
+      <td>CG totale du repas</td>
+      <td>{{ getSum() }} </td>
+      <td> &nbsp; </td>
     </tfoot>
   </table>
 </div>
+&nbsp; &nbsp;
+<form>
+  <div>
+    <label class="form-group" for="exampleFormControlTextarea1">Commentaire sur le repas :</label>
+    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+  </div>
+</form>

@@ -1,0 +1,46 @@
+<tr>
+    <td></td>
+    <td>
+      <!-- {{foodRow | json}} -->
+
+      <form [formGroup]="foodForm">
+        <mat-form-field>
+          <input matInput type="text" matInput placeholder="Aliment..." formControlName="foodsGroup" required [matAutocomplete]="autoGroup"
+            [(ngModel)]="foodRow.nameFood" />
+          <mat-autocomplete #autoGroup="matAutocomplete"  [displayWith]="displayFn"  (optionSelected)="getFood()">
+            <mat-optgroup *ngFor="let elt of foodsGroupOptions | async" [label]="elt.categorie">
+              <mat-option *ngFor="let food of elt.foods" [value]="food">
+                {{ food.name }}
+              </mat-option>
+            </mat-optgroup>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+    </td>
+    <td>
+      <label for="ig"></label>
+      <input [(ngModel)]="foodRow.ig" type="number" name="ig" id="ig" step="0.01" min="0" class="bordure">
+    </td>
+    <td>
+      <label for="portion"></label>
+      <input [(ngModel)]="foodRow.portion" (change)="calculCG()" type="number" class="bordure" name="portion" id="portion" step="0.01"
+        min="0">
+    </td>
+    <td>
+      <label for="glucides"></label>
+      <input [(ngModel)]="foodRow.glucides" type="number" class="bordure" name="glucides" id="glucides" step="0.01" min="0">
+    </td>
+    <td>
+      <label></label>
+
+      <input disabled [(ngModel)]="foodRow.cg" type="number" class="bordure" name="glucides" id="glucides" step="0.01" min="0">
+
+    </td>
+    <td>
+      <button mat-icon-button>
+        <mat-icon style="font-size:25px; color:#FF5E4D" aria-label="Delete" (click)="deleteFoodRow(index)">delete</mat-icon>
+      </button>
+
+
+    </td>
+  </tr>

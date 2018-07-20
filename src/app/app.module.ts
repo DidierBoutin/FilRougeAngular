@@ -17,8 +17,9 @@ import { HistoriqueComponent } from './historique/historique.component';
 import { ConnexionComponent } from './connexion/connexion.component';
 import { ProfilComponent } from './profil/profil.component';
 import { Page404Component } from './page404/page404.component';
-import { MatChipsModule, MatTableModule } from '@angular/material';
+import { MatChipsModule, MatTableModule, MatIconModule } from '@angular/material';
 import {MatButtonModule} from '@angular/material/button';
+
 
 
 
@@ -27,13 +28,14 @@ import {MatButtonModule} from '@angular/material/button';
 // tslint:disable-next-line:max-line-length
 import { MatToolbarModule, MatCardModule, MatAutocompleteModule, MatFormFieldModule, MatInputModule, MatSelectModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LineFoodComponent } from './line-food/line-food.component';
 
 
 
 
 const routes: Routes = [
   { path: '',
-   redirectTo: 'repas', pathMatch: 'full' },
+   redirectTo: 'aliments', pathMatch: 'full' },
    {
     path: 'repas',
     component: RepasComponent
@@ -78,9 +80,9 @@ component: Page404Component  }
     ConnexionComponent,
     ProfilComponent,
     Page404Component,
-              ],
+    LineFoodComponent,
 
-
+    ],
 
   imports: [
     BrowserModule,
@@ -101,7 +103,10 @@ component: Page404Component  }
     MatTableModule,
     MatButtonModule,
     Ng2SmartTableModule,
-        ],
+    MatIconModule,
+            ],
+
+
   providers: [],
   bootstrap: [AppComponent]
 })

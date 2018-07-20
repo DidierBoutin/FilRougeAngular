@@ -1,19 +1,23 @@
 export interface AutoComplFoodsGroup {
     categorie: string;
-    foods: string[];
-}
+    // foods: string[];
+   foods:  string [];
+ }
 
-export interface AutoComplFoods {
-    value: string;
-    title: string;
-}
 
-export interface FoodsGroup {
+ export interface AutoFoodsGroup {
+      value: string;
+      title: string;
+      id: number;
+ }
+
+ export interface FoodsGroup {
+
     id: number;
     name: string;
-}
+ }
 
-export interface Foods {
+ export interface Foods {
     id: number;
     name: string;
     foodsGroup: FoodsGroup;
@@ -24,7 +28,7 @@ export interface Foods {
     lipids: number;
     comment: string;
     createDate: string;
-}
+ }
 
 export interface ListFoods {
     id: number;
