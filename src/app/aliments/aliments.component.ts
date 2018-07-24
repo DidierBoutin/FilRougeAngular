@@ -4,86 +4,65 @@ import { FoodsService } from './../foods.service';
 import { MatTableDataSource } from '@angular/material';
 import { Component, OnInit } from '@angular/core';
 import { Ng2SmartTableModule, LocalDataSource } from 'ng2-smart-table';
-
 import { Foods, ListFoods, FoodsGroup } from '../foods_group';
-// import { eventNames } from 'cluster';
-
-
-
-
 
 @Component({
   selector: 'app-aliments',
   templateUrl: './aliments.component.html',
   styleUrls: ['./aliments.component.css'],
-
 })
-
 
 
 export class AlimentsComponent implements OnInit {
 
 
-  autoFoodsGroups: AutoFoodsGroup[] = [] ;
-
-  settings: any;
-
+// data list of ng2-smart table
   source: LocalDataSource;
 
-  idc: number;
+  // using by ng2-smart table to set parameter
+  settings: any;
 
-
-  constructor(public foodsService: FoodsService) {
-  }
+  constructor(public foodsService: FoodsService) {}
 
   ngOnInit() {
-    this.foodsService.getAllFoods()
+
+     this.foodsService.getAllFoods()
       .subscribe((foods) => {
+
+        // service to get datg in BDD and formating for ng2-smart-table
         this.foodsService.formaterAutoCompl(foods);
         this.source = new LocalDataSource(this.foodsService.listFoods);
-         this.autoFoodsGroups = this.foodsService.listGroup;
-         console.log('ici');
 
-        console.log(this.autoFoodsGroups);
-
-        console.log(this.foodsService.listFoods);
-
+        // we can use create, upadate and delete  services og ng2-smart-table
         this.settings = {
           actions: {
+            add: true,
+            edit: true,
+            delete: true,
             position: 'right',
             columnTitle: '',
-          },
-            delete: {
-              // deleteButtonContent: 'Supprimer',
+            },
+          delete: {
               confirmDelete: true,
-              deleteButtonContent: '  <span class="glyphicon glyphicon-remove table-actions-button"></span>  ',
+              deleteButtonContent: '  <span class="glyphicon glyphicon-trash table-actions-button"></span>  ',
               mode: 'external'
             },
-            add: {
+          add: {
               // addButtonContent: 'Ajouter',
               confirmCreate: true,
               addButtonContent: '<span class="glyphicon glyphicon-plus">'
             },
-            edit: {
+          edit: {
               confirmSave: true,
-              // mode: 'inline',
-              // editButtonContent: '<span class="glyphicon glyphicon-pencil"></span>'
+              editButtonContent: '<span class="glyphicon glyphicon-pencil"></span>'
             },
           setPaging: true,
           pager: {
             display: true,
           },
-          columns: {
-            // id: {
-            //   title: 'ID',
-            //   width: '5%',
-            //   show: false,
-            //   editable: false,
-            //   creatable: false,
-              // sort: true,
-              // filter: true,
-              // show: false,
 
+          // list of columns :
+          columns: {
             name: {
               title: 'Aliment',
               editable: true,
@@ -96,58 +75,55 @@ export class AlimentsComponent implements OnInit {
             },
             categorie: {
               title: 'Catégorie',
-              width: '15%',
-              // valuePrepareFunction: ((cell) =>  cell.name) ,
+              width: '20%',
+              // In editor and Filter, Categorie display with autocomplete (type list), with data get by foods service
               editor: {
                 type: 'list',
                  config: {
                     selectText: 'Select...',
                     list: this.foodsService.listGroup,
                     confirmSave: true,
-                },
-            },
+                          },
+                      },
                filter: {
                 type: 'list',
                 config: {
                   selectText: 'Select...',
                   list:  this.foodsService.listGroup,
-              }
-            }
-          },
+                        }
+                      }
+            },
             glycIndex: {
               title: 'IG (pour 100gr)   ',
               editable: true,
-              width: '7%',
+              width: '9%',
               filter: true,
               type: 'number',
             },
             energy: {
               title: 'Energie',
               editable: true,
-              width: '7%',
+              width: '9%',
               filter: true,
+              type: 'number',
+
             },
-            // portion: {
-            //   title: 'Portion (en gr)',
-            //   editable: true,
-            //   filter: false,
-            // },
             carboHydrates: {
               title: 'Glucides',
               editable: true,
-              width: '2%',
+              width: '9%',
               filter: true,
             },
             proteins: {
               title: 'Proteines',
               editable: true,
-              width: '7%',
+              width: '9%',
               filter: true,
             },
             lipids: {
               title: 'Lipides',
               editable: true,
-              width: '7%',
+              width: '9%',
 
               filter: true,
             },
@@ -157,16 +133,11 @@ export class AlimentsComponent implements OnInit {
               editor: {
                 type: 'textarea',
               },
-              width: '20%',
+              width: '15%',
               filter: true,
             },
-
           },
         };
-
-
-
-
       });
   }
 
@@ -178,12 +149,16 @@ export class AlimentsComponent implements OnInit {
 // ==> "event binding" avec html
 
   onDeleteConfirm(event) {
-    if (window.confirm('Are you sure you want to delete?')) {
+     if (window.confirm('Are you sure you want to delete?')) {
+
+      // ***init screen without food deleted
       event.confirm.resolve();
 
-      const newFood: Foods = this.formatFoodsGroupDelete(event);
-      this.foodsService.delete(newFood).subscribe ( (food: Foods) => {
-        food = newFood;
+      // *****Delete food in  BDD
+      // format food Foofs from line
+      const delFood: Foods = this.formatFoodsGroupDelete(event);
+      this.foodsService.delete(delFood).subscribe ( (food: Foods) => {
+        food = delFood;
    });
 
     } else {
@@ -191,11 +166,12 @@ export class AlimentsComponent implements OnInit {
     }
   }
 
+
   onSaveConfirm(event) {
+
      if (window.confirm('Are you sure you want to save?')) {
        event.confirm.resolve(event.newData);
-       // this.source.remove(event.newdata);
-       const newFood: Foods = this.formatFoodsGroup(event);
+        const newFood: Foods = this.formatFoodsGroup(event);
 
        this.foodsService.update(newFood).subscribe ( (food: Foods) => {
              food = newFood;
@@ -205,48 +181,60 @@ export class AlimentsComponent implements OnInit {
     }
     this.source.refresh();
   }
+
+
   onCreateConfirm(event) {
+
      if (window.confirm('Are you sure you want to create   ?')) {
 
       const newFood: Foods = this.formatFoodsGroup(event);
       this.foodsService.create(newFood).subscribe ( (food: Foods) => {
         food = newFood; });
       event.confirm.resolve(event.newData);
-
-
     } else {
       event.confirm.reject();
     }
     this.source.refresh();
   }
 
+
+  // get value of event.newData to save in Food
   formatFoodsGroup(event: any): Foods {
+
+    // get id of categorie  in listGroup to save it in Foods
     const  newFoodsGroup: AutoFoodsGroup = this.foodsService.listGroup
-       .find( (element) => { if (element.value === event.newData.categorie) { return event.newData.categorie; }
-      });
+        .find( (element) => { if (element.value === event.newData.categorie) {  return event.newData.categorie; }
+       });
+
 
       return  {
         id: event.newData.id ,
         name: event.newData.name ,
         foodsGroup: { id: newFoodsGroup.id, name: newFoodsGroup.value },
-        glycIndex: event.newData.glycIndex ,
+         glycIndex: event.newData.glycIndex ,
         energy: event.newData.energy,
         carboHydrates: event.newData.carboHydrates,
         proteins: event.newData.proteins,
         lipids: event.newData.lipids,
         comment: event.newData.comment,
         createDate: ''};
-
   }
+
+
+
+  // get value of event.data to save in Food
   formatFoodsGroupDelete(event: any): Foods {
-    const  newFoodsGroup: AutoFoodsGroup = this.foodsService.listGroup
+
+
+    // get id of categorie  in listGroup to save it in Foods
+    const  delFoodsGroup: AutoFoodsGroup = this.foodsService.listGroup
        .find( (element) => { if (element.value === event.data.categorie) { return event.data.categorie; }
       });
 
       return  {
         id: event.data.id ,
         name: event.data.name ,
-        foodsGroup: { id: newFoodsGroup.id, name: newFoodsGroup.value },
+        foodsGroup: { id: delFoodsGroup.id, name: delFoodsGroup.value },
         glycIndex: event.data.glycIndex ,
         energy: event.data.energy,
         carboHydrates: event.data.carboHydrates,
@@ -254,9 +242,5 @@ export class AlimentsComponent implements OnInit {
         lipids: event.data.lipids,
         comment: event.data.comment,
         createDate: ''};
-
   }
-
-
-
 }

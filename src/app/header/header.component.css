@@ -1,13 +1,38 @@
-.titre{
-  font-style: italic;
-  font-Weight: Bold;
-  color: #2EAAAB;
-  margin-top: 5px;
- }
-
- .toolbar{
+.toolbar{
   background-image: url("/assets/images/toolbar.jpg");
-  height: 140px;
-    }
-
+   height: 140px;
+   margin-top: 2px;
+     }
+ span {
+   text-align: center;
+   margin-top: 0px;
+   color: rgb(49, 150, 94);
+   font-style: italic;
+   font-Weight: Bold;
+   font-size: 30px;
+ 
+ }
+ 
+ #titleResponsive {
+     /* text-align: center; */
+     color: rgb(49, 150, 94);
+     font-style: italic;
+     font-Weight: Bold;
+     font-size: 20px;
+ }
+ 
+ #fontSize:hover{
+     font-size: 20px;  
+     outline-style:none;
+ }
+ 
+ ul {
+     width: 100%;
+     display: flex;
+     justify-content: space-between
+ }
+ 
+ li {
+     list-style-type: none;
+ }
    

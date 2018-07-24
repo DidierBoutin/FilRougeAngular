@@ -12,14 +12,11 @@ import { HttpClient } from '@angular/common/http';
 
 export class FoodsService {
 
-  // liste de tous les categorie
+  // list of all FoodsGroup (categorie) for autocomplete of component Aliment
   listGroup: AutoFoodsGroup[] = [];
-
-  // liste de tous les aliments
+  // list of all foods  to display in component Aliment
   listFoods: ListFoods[] = [];
-
-
-  // liste de tout les aliments par categorie
+  // list of all foods by FoodsGoup categorie (for autocomplete of component Repas)
   autoCFG: AutoComplFoodsGroup[] = [];
 
 
@@ -27,18 +24,17 @@ export class FoodsService {
 
 
 
-  constructor(private http: HttpClient) {
-    this.getAllFoods();
-    // this.getFoodById(this.id);
-    // this.getFoodByName(this.name);
-  }
+  constructor(private http: HttpClient) {}
+
 
   getFoodByName(f: string): Observable<Foods> {
     return this.http.get<Foods>(this.API_URL + '/' + f);
    }
 
   getAllFoods(): Observable<Foods[]> {
+    console.log(' deb getAllFoods');
     return this.http.get<Foods[]>(this.API_URL);
+
   }
 
   update (foodAliment: Foods ): Observable<Foods> {
@@ -55,99 +51,85 @@ export class FoodsService {
 
 
 
-  // formaterAutoCompl(f: Foods[]) {
-  //   let i: number;
-
-  //    // const autoCFG = [];
-  //   for (i = 0; i < f.length; i++) {
-  //     let j: number;
-  //     const foodsByCat = [];
-
-  //     if (f[i]['foodsGroup']) {
-
-  //         for (j = i; (j < f.length) && f[j]['foodsGroup']
-  //         && (f[j]['foodsGroup']['name'] === f[i]['foodsGroup']['name'])
-  //         ; j++) {
-  //          // foodsByCat.push({name: f[j]['name'], id: f[j]['id'], ig: f[j]['glycIndex'], glucide: f[j]['carboHydrates']});
-  //          foodsByCat.push({name: f[j]['name']});
-  //        this.pushListFoods(f, j);
-  //        }
-  //       this.autoCFG.push({       categorie: f[i]['foodsGroup']['name'],
-  //         foods: foodsByCat});
-
-  //         this.autoCFG.push({
-  //           categorie: f[i]['foodsGroup']['name'],
-  //           foods: foodsByCat});
-
-  //       this.listGroup.push({title: f[i]['foodsGroup']['name'], value: f[i]['foodsGroup']['name'], id: f[i]['foodsGroup']['id'] });
-
-  //        i = j - 1;
-  //     } else {
-  //        this.autoCFG.push({
-  //         categorie: 'Non renseignée',
-  //         foods: [ f[i]['name']]
-  //         // foods: [{name: f[i]['name'], id: f[i]['id'], ig: f[i]['glycIndex'], glucide: f[i]['carboHydrates']}]
-  //       });
-  //       this.pushListFoods(f, i);
-  //     }
-  //   }
-  //  }
-
   formaterAutoCompl(f: Foods[]) {
 
-    const autoCFG = [];
+    // init data using in coponents Repas (autocomplemente name - autoCGG) and Aliment (list Foods and list category)
+     const autoCFG = [];
+     const listGroup = [];
+     const listFoods = [];
 
-    // init d'une categorie 'NOn renseigné' à l'index 0
-    this.listGroup.push({ title: 'Non renseignée', value: 'Non renseignée', id: null });
 
-    // init 'de la categorie dans l'autocompetion de la table aliment
+    // init a categorie 'Non renseigné' at index 0
+    listGroup.push({ title: 'Non renseignée', value: 'Non renseignée', id: null });
+
+    // init a categorie "non renseignée" in AutoCFG
      autoCFG.push({
       categorie: 'Non renseignée',
       foods: []
     });
 
+    // init index  principal loop
     let i: number;
 
-
+    // **************** Loop on each food of foods *********************
     for (i = 0; i < f.length; i++) {
 
        // init List food (source of ng2-smart-table of Aliment componet)
-      this.pushListFoods(f, i);
+      this.pushListFoods(f, i, listFoods);
 
-      // init auto completion column aliment of repas
+      // === init auto completion column aliment of repas : ListFood ===
+      // if Foodgroup (categorie exists)
       if (f[i]['foodsGroup']) {
         let j = 0;
-        while ((j < autoCFG.length) && (autoCFG[j]['categorie'] !== f[i]['foodsGroup']['name'])) { j++; }
+
+        // looking for if categorie already exists in autoCFG on index j
+        while ((j < autoCFG.length) && (autoCFG[j]['categorie'] !== f[i]['foodsGroup']['name'])) {
+          j++; }
+
+        // here, category exists : push only food in category indexed by j
         if (j < autoCFG.length) {
-          console.log(autoCFG[j]);
-          autoCFG[j]['foods'].push({ name: f[i]['name'], id: f[i]['id'], ig: f[i]['glycIndex'], glucide: f[i]['carboHydrates']} );
+           autoCFG[j]['foods']
+           .push({ name: f[i]['name'], id: f[i]['id'], ig: f[i]['glycIndex'], glucide: f[i]['carboHydrates']} );
+
+        // here, category not exist yet  : push it with the food readed
         } else {
-          autoCFG.push({
+          autoCFG
+          .push({
             categorie: f[i]['foodsGroup']['name'],
-            // foods: [f[i]['name']]
             foods: [{ name: f[i]['name'], id: f[i]['id'], ig: f[i]['glycIndex'], glucide: f[i]['carboHydrates'] }]
           });
 
-          this.listGroup.push({ title: f[i]['foodsGroup']['name'], value: f[i]['foodsGroup']['name'], id: f[i]['foodsGroup']['id'] });
+          // save categorie for listGroup (autocompete in ng2-smart-tablle of component Aliment)
+          listGroup
+          .push({ title: f[i]['foodsGroup']['name'], value: f[i]['foodsGroup']['name'], id: f[i]['foodsGroup']['id'] });
 
 
         }
       } else {
-         autoCFG[0]['foods'].push({ name: f[i]['name'], id: f[i]['id'], ig: f[i]['glycIndex'], glucide: f[i]['carboHydrates'] });
+        // here, no category for food readed, save it in categorie index 0 ('non renseignée')
+         autoCFG[0]['foods']
+         .push({ name: f[i]['name'], id: f[i]['id'], ig: f[i]['glycIndex'], glucide: f[i]['carboHydrates'] });
       }
     }
 
+    // save data for using in components
     this.autoCFG = autoCFG;
+    this.listGroup = listGroup;
+    this.listFoods = listFoods;
+
   }
 
-  pushListFoods(f: Foods[], j: number) {
+
+  // ***** save food in ListFood/
+  pushListFoods(f: Foods[], j: number, listFoods: ListFoods[]) {
 
 
 
-    this.listFoods.push(
+    listFoods.push(
       { id: f[j]['id'],
       name: f[j]['name'],
       categorie: (f[j]['foodsGroup']) ? f[j]['foodsGroup']['name'] : 'Non renseignée',
+      idcat: (f[j]['foodsGroup']) ? f[j]['foodsGroup']['id'] : null,
       glycIndex: f[j]['glycIndex'],
       energy: f[j]['energy'],
       carboHydrates: f[j]['carboHydrates'],

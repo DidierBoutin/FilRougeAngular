@@ -15,8 +15,7 @@ menu;
     this.menu = this.menuService.menu;
   }
 selectMenu (m: Menu) {
-  console.log ('click: ,m');
-  this.menuService.selectedMenu = m;
+   this.menuService.selectedMenu = m;
   }
 
 }

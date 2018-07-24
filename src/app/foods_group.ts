@@ -34,6 +34,7 @@ export interface ListFoods {
     id: number;
     name: string;
     categorie: string;
+    idcat: number;
     glycIndex: number;
     energy: number;
     carboHydrates: number;

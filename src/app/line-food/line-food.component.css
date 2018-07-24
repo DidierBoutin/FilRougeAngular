@@ -1,0 +1,92 @@
+#marginLeft {
+    margin-left: 20px;
+  }
+  
+  label {
+    text-align: center;
+    font-style: italic;
+    display: block;
+  }
+  
+  input {
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(212, 209, 209);
+    border-radius: 5px;
+    background-color: white;
+    height: 35px;
+    width: 100%;
+    text-align: center;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-top: 0;
+  }
+  
+  .alimentLeft {
+    text-align: left;
+  }
+  
+  /* #marginLeft{
+      margin-left:px;
+  } */
+  
+  .marginDown {
+    margin-bottom: 27px;
+    text-align: center;
+    font-style: italic;
+  }
+  
+  .centerAliment {
+    text-align: center;
+    font-style: italic;
+  }
+  
+  .cellulecg {
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(212, 209, 209);
+    border-radius: 5px;
+    background-color: white;
+    height: 35px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .delete {
+    font-size: 25px;
+    color: #FF5E4D;
+    /* text-align: right;
+      padding-top: 22px; */
+    height: 35px;
+    width: 100%;
+    text-align: center;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-top: 20px;
+  }
+  
+  .marginDownD {
+    margin-bottom: 22px;
+    text-align: center;
+  }
+  
+  /* .example-full-width {
+    width: 100%;
+  } */
+  
+  .col-md-1 {
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+  
+  .col-md-2 {
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+  
+  .col-md-5 {
+    padding-left: 2px;
+    padding-right: 2px;
+  }

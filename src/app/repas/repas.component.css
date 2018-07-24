@@ -1,77 +1,65 @@
-/* .center {
-  text-align: center;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-weight: bold;
-  font-style: italic;
-  color: rgb(46, 236, 46); */
-/* } */
-
 #typeRepas {
-  display: flex;
+  /* display: flex; */
   margin-top: 2px;
   margin-left: 2px;
   margin-bottom: 2px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: 10px;
-  margin-left: 10px;
-}
-
-/* Structure */
-
-table {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 12px;
-  border-collapse: collapse;
-  width: 80%;
-  font-weight: bold;
-  margin-left: 15px;
+  margin-left:20px;
 }
 
-/* .CG {
-  background-color: #FDE9E0;
-} */
+.button {
+  margin-left: 20px;
+}
 
-
-th,
-td,
-tfoot {
-  padding: 8px;
+p {
   text-align: center;
-  border-bottom: 1px solid #ddd;
-}
-
-#alignLeft {
+  background-color: white;
+  height: 35px;
+  width: 100%;
   text-align: center;
 }
 
-th,
-tfoot {
-  color: cornflowerblue;
+.summCG {
+  text-align: right;
+  width: 5%;
 }
 
-tfoot {
-  height: 5px;
-}
-
-mat-form-field {
-  font-size: 14px;
-}
-
-form {
-  display: inline;
-}
-
-.bordure {
-  border: hidden;
-  text-align: center
-}
-
-.form-control,
-.form-group {
-  color: cornflowerblue;
+.CG {
+  text-align: right;
+  font-size: 20px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: 12px;
-  width: 80%;
   font-weight: bold;
-  margin-left: 15px;
+  color: #01DF74;
+}
+#cgLeft{
+  text-align: center; 
+  color: #01DF74;
+  font-size: 20px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: bold;
+}
+.marginLeft{
+  margin-left:20px;
+  text-align-last: center;
+}
+
+
+
+.cellulecg {
+  background-color: white;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+container-fluid {
+  background: rgb(248, 64, 230);
+}
+.delete {
+  font-size: 25px;
+  color: #FF5E4D;
+  text-align: left;
+  outline-style:none;
 }
