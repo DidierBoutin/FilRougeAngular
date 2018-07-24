@@ -1,0 +1,8 @@
+
+  <ul class="backgroundColor" fxLayout="column" fxLayoutAlign="start center" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-around center">
+    <li *ngFor="let m of menuService.getList('footer')" [style.color]="menuService.selectedMenu.name === m.name ? 'green' : 'blue'"
+      (click)="selectMenu(m, $event)" href="#">
+      {{m.name}}
+    </li>
+  </ul>
+

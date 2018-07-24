@@ -1,0 +1,60 @@
+<br>
+<div id="typeRepas">
+
+  <mat-form-field>
+    <mat-select placeholder="Saisir le type de repas">
+      <mat-option *ngFor="let typem of typeMeal" [value]="typem.value">
+        {{ typem.viewValue }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+</div>
+
+&nbsp;
+<div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>
+          <button mat-icon-button>
+            <mat-icon style="font-size:25px; color: #82C46C" aria-label="Add" (click)="addFoodRow()">playlist_add</mat-icon>
+          </button>
+        </th>
+        <th id="alignLeft">Aliments</th>
+        <th>IG</th>
+        <th>Portion
+          <br> (en gr)</th>
+        <th>Glucides</th>
+        <th>CG</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <app-line-food 
+                      *ngFor="let foodRow of foodsRow ; 
+                      let i = index" [index]="i" [foodRow]="foodRow" (deleted)="deleteFoodRow($event)" >
+     </app-line-food>
+     
+    </tbody>
+    <tfoot>
+      <td>
+        &nbsp;
+      </td>
+      <td> &nbsp; </td>
+      <td> &nbsp; </td>
+      <td>CG totale du repas</td>
+      <td>{{ getSum() }} </td>
+      <td> &nbsp; </td>
+    </tfoot>
+  </table>
+</div>
+&nbsp; &nbsp;
+<form>
+  <div>
+    <label class="form-group" for="exampleFormControlTextarea1">Commentaire sur le repas :</label>
+    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+  </div>
+</form>

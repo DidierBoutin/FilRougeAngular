@@ -1,0 +1,13 @@
+<form [formGroup]="stateForm">
+    <mat-form-field>
+      <input type="text" matInput placeholder="States Group" formControlName="sttateGroup" required [matAutocomplete]="autoGroup">
+        <mat-autocomplete #autoGroup="matAutocomplete">
+          <mat-optgroup *ngFor="let elt of stateGroupOptions | async" [label]="elt.letter">
+            <mat-option *ngFor="let name of elt.names" [value]="name">
+              {{name}}
+            </mat-option>
+        </mat-optgroup>
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
+  
